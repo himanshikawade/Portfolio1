@@ -136,6 +136,7 @@
     border:none; cursor:pointer; text-decoration:none;
     transition: transform 0.2s, box-shadow 0.2s;
     letter-spacing:0.3px;
+    display:inline-flex; align-items:center; gap:8px;
   }
   .btn-primary:hover { transform:translateY(-3px); box-shadow:0 12px 30px rgba(124,107,255,0.35); }
   .btn-outline {
@@ -145,8 +146,19 @@
     font-weight:600; font-size:0.9rem;
     cursor:pointer; text-decoration:none;
     transition: background 0.2s, transform 0.2s;
+    display:inline-flex; align-items:center; gap:8px;
   }
   .btn-outline:hover { background:rgba(124,107,255,0.1); transform:translateY(-3px); }
+  .btn-resume {
+    padding:14px 30px; border-radius:8px;
+    border:1px solid var(--accent3);
+    color:var(--accent3); background:transparent;
+    font-weight:600; font-size:0.9rem;
+    cursor:pointer; text-decoration:none;
+    transition: background 0.2s, transform 0.2s;
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  .btn-resume:hover { background:rgba(77,255,210,0.1); transform:translateY(-3px); }
   .social-icons { display:flex; gap:18px; opacity:0; animation: fadeUp 0.7s 1.2s forwards; }
   .social-icons a {
     width:42px;height:42px; border-radius:50%;
@@ -337,18 +349,35 @@
 
   /* ── CERTIFICATIONS ── */
   #certifications { display:flex; flex-direction:column; justify-content:center; }
-  .cert-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:24px; }
+  .cert-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:24px; }
   .cert-card {
     background:var(--card-bg); border:1px solid var(--border);
-    border-radius:14px; padding:32px 28px;
+    border-radius:14px; overflow:hidden;
     opacity:0; transform:rotate(0deg) scale(0.9);
     transition:transform 0.3s, box-shadow 0.3s, background 0.3s;
-    display:flex; flex-direction:column; gap:16px;
+    display:flex; flex-direction:column;
   }
-  .cert-card:hover { transform:rotate(2deg) scale(1.03); background:var(--surface2); box-shadow:0 20px 50px rgba(0,0,0,0.4); }
-  .cert-provider { font-size:0.72rem; color:var(--accent3); font-family:'JetBrains Mono',monospace; letter-spacing:2px; text-transform:uppercase; }
+  .cert-card:hover { transform:translateY(-5px) scale(1.02); background:var(--surface2); box-shadow:0 20px 50px rgba(0,0,0,0.4); }
+  .cert-img-wrap {
+    width:100%; height:180px; overflow:hidden; cursor:pointer;
+    position:relative;
+  }
+  .cert-img-wrap img {
+    width:100%; height:100%; object-fit:cover;
+    transition:transform 0.4s;
+  }
+  .cert-card:hover .cert-img-wrap img { transform:scale(1.05); }
+  .cert-img-wrap .zoom-hint {
+    position:absolute; bottom:8px; right:8px;
+    background:rgba(0,0,0,0.6); color:#fff;
+    padding:4px 10px; border-radius:6px; font-size:0.7rem;
+    opacity:0; transition:opacity 0.3s;
+    pointer-events:none;
+  }
+  .cert-card:hover .zoom-hint { opacity:1; }
+  .cert-body { padding:24px 24px 28px; }
+  .cert-provider { font-size:0.72rem; color:var(--accent3); font-family:'JetBrains Mono',monospace; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; }
   .cert-name { font-family:'Playfair Display',serif; font-size:1.05rem; font-weight:700; line-height:1.3; }
-  .cert-icon { font-size:2rem; }
 
   /* ── ACHIEVEMENTS ── */
   #achievements { display:flex; flex-direction:column; justify-content:center; }
@@ -363,12 +392,30 @@
   .achieve-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
   .achieve-card {
     background:var(--card-bg); border:1px solid var(--border);
-    border-radius:14px; padding:32px;
+    border-radius:14px; padding:0;
     opacity:0; transform:scale(0.8);
     transition:transform 0.3s, box-shadow 0.3s;
     position:relative; overflow:hidden;
   }
   .achieve-card:hover { transform:translateY(-5px); box-shadow:0 0 0 1px var(--gold),0 20px 40px rgba(240,192,96,0.15); }
+  .achieve-img-wrap {
+    width:100%; height:200px; overflow:hidden; cursor:pointer;
+    position:relative;
+  }
+  .achieve-img-wrap img {
+    width:100%; height:100%; object-fit:cover;
+    transition:transform 0.4s;
+  }
+  .achieve-card:hover .achieve-img-wrap img { transform:scale(1.05); }
+  .achieve-img-wrap .zoom-hint {
+    position:absolute; bottom:8px; right:8px;
+    background:rgba(0,0,0,0.6); color:#fff;
+    padding:4px 10px; border-radius:6px; font-size:0.7rem;
+    opacity:0; transition:opacity 0.3s;
+    pointer-events:none;
+  }
+  .achieve-card:hover .zoom-hint { opacity:1; }
+  .achieve-body { padding:28px 32px 32px; }
   .achieve-badge {
     display:inline-flex; align-items:center; gap:6px;
     padding:4px 12px; border-radius:12px; font-size:0.72rem;
@@ -382,6 +429,29 @@
   .achieve-title { font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:700; margin-bottom:6px; }
   .achieve-org { color:var(--accent); font-size:0.85rem; font-weight:600; margin-bottom:12px; }
   .achieve-desc { color:var(--muted); font-size:0.88rem; line-height:1.7; }
+
+  /* ── LIGHTBOX ── */
+  .lightbox-overlay {
+    position:fixed; inset:0; z-index:9999;
+    background:rgba(0,0,0,0.92);
+    display:none; align-items:center; justify-content:center;
+    cursor:zoom-out;
+    animation: lbFadeIn 0.25s ease;
+  }
+  .lightbox-overlay.active { display:flex; }
+  .lightbox-overlay img {
+    max-width:90vw; max-height:90vh;
+    border-radius:12px;
+    box-shadow:0 0 60px rgba(124,107,255,0.3);
+  }
+  .lightbox-close {
+    position:absolute; top:24px; right:32px;
+    font-size:2rem; color:#fff; cursor:pointer;
+    background:none; border:none; opacity:0.7;
+    transition:opacity 0.2s;
+  }
+  .lightbox-close:hover { opacity:1; }
+  @keyframes lbFadeIn { from{opacity:0} to{opacity:1} }
 
   /* ── CONTACT ── */
   #contact { display:flex; flex-direction:column; justify-content:center; }
@@ -449,7 +519,7 @@
   .ci-icon { width:36px; height:36px; border-radius:8px; background:rgba(124,107,255,0.1); display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:0.9rem; transition:color 0.3s; }
   .ci-label { font-size:0.75rem; color:var(--muted); }
   .ci-val { font-size:0.9rem; color:var(--text); font-weight:500; }
-  .contact-social { display:flex; gap:12px; margin-top:28px; }
+  .contact-social { display:flex; gap:12px; margin-top:28px; flex-wrap:wrap; }
   .contact-social a {
     padding:10px 18px; border-radius:8px; border:1px solid var(--border);
     color:var(--muted); text-decoration:none; font-size:0.85rem; font-weight:500;
@@ -476,12 +546,19 @@
     .proj-left,.exp-left { width:100% !important; }
     .stats-row { grid-template-columns:1fr 1fr; }
     .nav-links { display:none; }
+    .cert-grid { grid-template-columns:1fr; }
   }
 
   @media(prefers-reduced-motion:reduce){ *,*::before,*::after{ animation-duration:0.01ms !important; transition-duration:0.01ms !important; } }
 </style>
 </head>
 <body>
+
+<!-- LIGHTBOX -->
+<div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+  <img id="lightboxImg" src="" alt="Full view"/>
+</div>
 
 <!-- NAV -->
 <nav>
@@ -511,18 +588,22 @@
     <span class="desig-pill">Data Analytics</span>
   </div>
   <p class="intro-para">
-    A <strong>perfect-CGPA AI & Data Science engineer</strong> with hands-on production experience building end-to-end ML pipelines at Tata Elxsi. I thrive at the intersection of deep learning research and real-world deployment — from real-time OCR systems running at 30 FPS to weather radar forecasting models that cut data prep time by 85%. Passionate about Computer Vision, time-series forecasting, and making intelligent systems that genuinely move the needle. Let's build something that matters.
+    A <strong>gold-medalist AI & Data Science engineer</strong> with hands-on production experience building end-to-end ML pipelines at Tata Elxsi. I thrive at the intersection of deep learning research and real-world deployment — from real-time OCR systems running at 30 FPS to weather radar forecasting models that cut data prep time by 85%. Passionate about Computer Vision, time-series forecasting, and making intelligent systems that genuinely move the needle. Let's build something that matters.
   </p>
   <div class="cta-group">
-    <a href="#about" class="btn-primary">Learn More About Me</a>
-    <a href="#contact" class="btn-outline">Get In Touch</a>
+    <a href="#about" class="btn-primary"><i class="fas fa-user"></i> Learn More About Me</a>
+    <a href="#contact" class="btn-outline"><i class="fas fa-paper-plane"></i> Get In Touch</a>
+    <a href="Resume.pdf" class="btn-resume" download><i class="fas fa-download"></i> Download Resume</a>
   </div>
   <div class="social-icons">
     <a href="https://github.com/himanshikawade" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
     <a href="https://www.linkedin.com/in/himanshi-kawade/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+    <a href="https://www.kaggle.com/himanshikawade04" target="_blank" title="Kaggle"><i class="fab fa-kaggle"></i></a>
     <a href="mailto:himanshikawade4@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
   </div>
 </section>
+
+
 
 <!-- ABOUT -->
 <section id="about">
@@ -539,12 +620,13 @@
         <a href="#projects" class="vw-btn">Projects</a>
         <a href="#skills" class="vw-btn">Skills</a>
         <a href="#certifications" class="vw-btn">Certifications</a>
+        <a href="Resume.pdf" class="vw-btn" download>📄 Resume</a>
       </div>
     </div>
     <div class="about-copy" id="aboutCopy">
-      <p>I'm Himanshi Kawade, an AI & Data Science engineer who graduated with a flawless 10/10 CGPA from S.B. Jain Institute of Technology, Nagpur. Currently working as an ML/AI Engineer at Tata Elxsi, Bangalore, I build production-grade forecasting and data intelligence systems for real-world domains like meteorology.</p>
-      <p>My toolkit spans the full ML lifecycle — from ingesting raw data and engineering meaningful features, to training CNNs and LSTMs, deploying REST APIs with Flask, and presenting insights through Power BI and Tableau dashboards. I have a particular affinity for Computer Vision and Deep Learning, where I've consistently achieved 94–95% accuracy on complex perception tasks.</p>
-      <p>Beyond engineering, I've led the EMERGICON technical forum of 200+ students as President, managed inter-college tech fests and hackathons, and contributed 120+ hours through NSS — because building systems that work and communities that thrive are equally important to me. I'm currently exploring Transformers, LangChain, and Docker to broaden my horizons at the edge of modern AI.</p>
+      <p>I'm Himanshi Kawade, an AI & Data Science engineer who graduated with a 10/10 CGPA from S.B. Jain Institute of Technology, Management & Research, Nagpur. Currently working as an ML/AI Engineer at Tata Elxsi, Bangalore, I build production-grade forecasting and data intelligence systems for real-world domains like meteorology.</p>
+      <p>My toolkit spans the full ML lifecycle — from ingesting raw data and engineering meaningful features, to training CNNs and LSTMs, deploying REST APIs with Flask and Django, and presenting insights through Power BI and Tableau dashboards. I have a particular affinity for Computer Vision and Deep Learning, where I've consistently achieved 94–95% accuracy on complex perception tasks.</p>
+      <p>Beyond engineering, I served as President of the EMERGICON Students Forum (AI&DS department), coordinated TECHNOTSAV 2024 — the institute's annual technical fest, managed inter-college hackathons, and contributed 120+ hours through NSS — because building systems that work and communities that thrive are equally important to me. I'm currently exploring Transformers, LangChain, and Docker to broaden my horizons at the edge of modern AI.</p>
       <div class="mission-vision">
         <div class="mv-card" id="mCard1">
           <h4>Mission</h4>
@@ -679,9 +761,12 @@
       <div class="edu-meta">Aug 2021 – Aug 2025 &nbsp;|&nbsp; Nagpur &nbsp;|&nbsp; CGPA: 10 / 10 &nbsp;|&nbsp; Full-Time</div>
       <ul class="edu-highlights">
         <li>Specialised in Machine Learning, Deep Learning, Computer Vision, and Data Analytics.</li>
-        <li>Graduated with a perfect 10/10 CGPA — top of the programme.</li>
-        <li>Built real-world projects spanning CNN classifiers, OCR pipelines, and facial detection systems.</li>
+        <li>Graduated with a 10/10 CGPA — top of the programme.</li>
+        <li>Received Best Student of the Department award for outstanding academic and extracurricular performance.</li>
         <li>Served as President of EMERGICON (Students Forum Committee) for the 2023–24 term.</li>
+        <li>Coordinated TECHNOTSAV 2024, the institute's annual technical and cultural fest.</li>
+        <li>Built real-world projects spanning CNN classifiers, OCR pipelines, and facial detection systems.</li>
+        <li>Placed at Cojag Smart Technology during campus placements.</li>
       </ul>
     </div>
     <div class="edu-card" id="eduCard2">
@@ -877,7 +962,7 @@
       <div class="skill-cat-header"><span class="skill-icon">⚙️</span><span class="skill-cat-name">Backend &amp; DevOps</span></div>
       <div class="skill-row"><div class="skill-label"><span class="skill-name">Flask / Django / Streamlit</span><span class="skill-pct" data-val="85">0%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" data-target="85"></div></div></div>
       <div class="skill-row"><div class="skill-label"><span class="skill-name">REST APIs</span><span class="skill-pct" data-val="83">0%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" data-target="83"></div></div></div>
-      <div class="skill-row"><div class="skill-label"><span class="skill-name">Git / GitHub</span><span class="skill-pct" data-val="88">0%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" data-target="88"></div></div></div>
+      <div class="skill-row"><div class="skill-label"><span class="skill-name">Git / GitHub / GitLab</span><span class="skill-pct" data-val="88">0%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" data-target="88"></div></div></div>
       <div class="skill-row"><div class="skill-label"><span class="skill-name">Firebase</span><span class="skill-pct" data-val="72">0%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" data-target="72"></div></div></div>
     </div>
 
@@ -910,15 +995,63 @@
   <h2 class="section-title">Certifications</h2>
   <div class="title-line"></div>
   <div class="cert-grid" id="certGrid">
-    <div class="cert-card"><div class="cert-icon">📊</div><div class="cert-provider">PW Skills</div><div class="cert-name">Data Science Masters</div></div>
-    <div class="cert-card"><div class="cert-icon">🧠</div><div class="cert-provider">NPTEL</div><div class="cert-name">Deep Learning</div></div>
-    <div class="cert-card"><div class="cert-icon">🤖</div><div class="cert-provider">Microsoft</div><div class="cert-name">Azure AI Essentials</div></div>
-    <div class="cert-card"><div class="cert-icon">✨</div><div class="cert-provider">Microsoft / LinkedIn</div><div class="cert-name">Career Essentials in Generative AI</div></div>
-    <div class="cert-card"><div class="cert-icon">🗄️</div><div class="cert-provider">HackerRank</div><div class="cert-name">SQL Certification</div></div>
-    <div class="cert-card"><div class="cert-icon">🍃</div><div class="cert-provider">MongoDB University</div><div class="cert-name">MongoDB</div></div>
-    <div class="cert-card"><div class="cert-icon">🐍</div><div class="cert-provider">Web Framework</div><div class="cert-name">Django</div></div>
-    <div class="cert-card"><div class="cert-icon">🌐</div><div class="cert-provider">Web Development</div><div class="cert-name">HTML / CSS / Bootstrap</div></div>
-    <div class="cert-card"><div class="cert-icon">💻</div><div class="cert-provider">Programming</div><div class="cert-name">C Language</div></div>
+
+    <div class="cert-card">
+      <div class="cert-img-wrap" onclick="openLightbox('Certificates/Data science masters.png')">
+        <img src="Certificates/Data science masters.png" alt="Data Science Masters Certificate" loading="lazy"/>
+        <span class="zoom-hint"><i class="fas fa-search-plus"></i> Click to view</span>
+      </div>
+      <div class="cert-body"><div class="cert-provider">PW Skills</div><div class="cert-name">Data Science Masters</div></div>
+    </div>
+
+    <div class="cert-card">
+      <div class="cert-img-wrap" onclick="openLightbox('Certificates/Deep learning.png')">
+        <img src="Certificates/Deep learning.png" alt="Deep Learning Certificate" loading="lazy"/>
+        <span class="zoom-hint"><i class="fas fa-search-plus"></i> Click to view</span>
+      </div>
+      <div class="cert-body"><div class="cert-provider">NPTEL</div><div class="cert-name">Deep Learning</div></div>
+    </div>
+
+    <div class="cert-card">
+      <div class="cert-img-wrap" onclick="openLightbox('Certificates/microsoft azure ai essential.png.jpeg')">
+        <img src="Certificates/microsoft azure ai essential.png.jpeg" alt="Microsoft Azure AI Essentials Certificate" loading="lazy"/>
+        <span class="zoom-hint"><i class="fas fa-search-plus"></i> Click to view</span>
+      </div>
+      <div class="cert-body"><div class="cert-provider">Microsoft</div><div class="cert-name">Azure AI Essentials</div></div>
+    </div>
+
+    <div class="cert-card">
+      <div class="cert-img-wrap" onclick="openLightbox('Certificates/carrer essentail in gen ai .png.jpeg')">
+        <img src="Certificates/carrer essentail in gen ai .png.jpeg" alt="Career Essentials in Generative AI Certificate" loading="lazy"/>
+        <span class="zoom-hint"><i class="fas fa-search-plus"></i> Click to view</span>
+      </div>
+      <div class="cert-body"><div class="cert-provider">Microsoft / LinkedIn</div><div class="cert-name">Career Essentials in Generative AI</div></div>
+    </div>
+
+    <div class="cert-card">
+      <div class="cert-img-wrap" onclick="openLightbox('Certificates/SQl.png')">
+        <img src="Certificates/SQl.png" alt="SQL Certification" loading="lazy"/>
+        <span class="zoom-hint"><i class="fas fa-search-plus"></i> Click to view</span>
+      </div>
+      <div class="cert-body"><div class="cert-provider">HackerRank</div><div class="cert-name">SQL Certification</div></div>
+    </div>
+
+    <div class="cert-card">
+      <div class="cert-img-wrap" onclick="openLightbox('Certificates/Django.png')">
+        <img src="Certificates/Django.png" alt="Django Certificate" loading="lazy"/>
+        <span class="zoom-hint"><i class="fas fa-search-plus"></i> Click to view</span>
+      </div>
+      <div class="cert-body"><div class="cert-provider">Web Framework</div><div class="cert-name">Django</div></div>
+    </div>
+
+    <div class="cert-card">
+      <div class="cert-img-wrap" onclick="openLightbox('Certificates/C certificate.jpg')">
+        <img src="Certificates/C certificate.jpg" alt="C Language Certificate" loading="lazy"/>
+        <span class="zoom-hint"><i class="fas fa-search-plus"></i> Click to view</span>
+      </div>
+      <div class="cert-body"><div class="cert-provider">Programming</div><div class="cert-name">C Language</div></div>
+    </div>
+
   </div>
 </section>
 
@@ -930,68 +1063,123 @@
 
   <div class="stats-row" id="statsRow">
     <div class="stat-box"><div class="stat-num">2+</div><div class="stat-label">Years Experience</div></div>
-    <div class="stat-box"><div class="stat-num">9</div><div class="stat-label">Certifications</div></div>
+    <div class="stat-box"><div class="stat-num">7</div><div class="stat-label">Certifications</div></div>
     <div class="stat-box"><div class="stat-num">5</div><div class="stat-label">Projects Deployed</div></div>
-    <div class="stat-box"><div class="stat-num">8+</div><div class="stat-label">Awards &amp; Honours</div></div>
+    <div class="stat-box"><div class="stat-num">9+</div><div class="stat-label">Awards &amp; Honours</div></div>
   </div>
 
   <div class="achieve-grid">
+
     <div class="achieve-card" id="achCard1">
-      <div class="achieve-badge badge-acad">🎓 Academic</div>
-      <div class="achieve-year">2021 – 2025</div>
-      <div class="achieve-title">LPF Merit Scholar</div>
-      <div class="achieve-org">S.B. Jain Institute of Technology</div>
-      <div class="achieve-desc">Awarded a merit-based scholarship every year across all four years of the B.Tech programme — recognising sustained academic excellence throughout the degree.</div>
+      <div class="achieve-body">
+        <div class="achieve-badge badge-acad">🏆 Academic</div>
+        <div class="achieve-year">2025</div>
+        <div class="achieve-title">Best Student of the Department</div>
+        <div class="achieve-org">AI &amp; Data Science Dept., SBJITMR</div>
+        <div class="achieve-desc">Recognised as the Best Student of the AI & Data Science department for outstanding academic performance, leadership contributions, and technical project excellence throughout the B.Tech programme.</div>
+      </div>
     </div>
+
     <div class="achieve-card" id="achCard2">
-      <div class="achieve-badge badge-acad">🏆 Academic</div>
-      <div class="achieve-year">2025</div>
-      <div class="achieve-title">Perfect CGPA — 10 / 10</div>
-      <div class="achieve-org">B.Tech AI &amp; Data Science</div>
-      <div class="achieve-desc">Graduated with a perfect 10/10 CGPA in a highly technical AI &amp; Data Science programme — one of the most demanding quantitative disciplines in the institution.</div>
+      <div class="achieve-body">
+        <div class="achieve-badge badge-acad">🎓 Academic</div>
+        <div class="achieve-year">2021 – 2025</div>
+        <div class="achieve-title">LPF Merit Scholar — All 4 Years</div>
+        <div class="achieve-org">S.B. Jain Institute of Technology</div>
+        <div class="achieve-desc">Awarded a merit-based scholarship every year across all four years of the B.Tech programme — recognising sustained academic excellence throughout the degree.</div>
+      </div>
     </div>
+
     <div class="achieve-card" id="achCard3">
-      <div class="achieve-badge badge-prof">⭐ Leadership</div>
-      <div class="achieve-year">2023 – 2024</div>
-      <div class="achieve-title">EMERGICON Forum President</div>
-      <div class="achieve-org">Students Forum Committee, SBJITMR</div>
-      <div class="achieve-desc">Led the EMERGICON technical forum, organizing events, workshops, and hackathons for a community of 200+ students — coordinating speakers, timelines, and cross-team collaboration across two academic semesters.</div>
+      <div class="achieve-body">
+        <div class="achieve-badge badge-acad">🎓 Academic</div>
+        <div class="achieve-year">2025</div>
+        <div class="achieve-title">10 / 10 CGPA — Department Topper</div>
+        <div class="achieve-org">B.Tech AI &amp; Data Science</div>
+        <div class="achieve-desc">Graduated with a 10/10 CGPA in a highly technical AI & Data Science programme — one of the most demanding quantitative disciplines in the institution.</div>
+      </div>
     </div>
+
     <div class="achieve-card" id="achCard4">
-      <div class="achieve-badge badge-prof">🤝 Community</div>
-      <div class="achieve-year">2021 – 2023</div>
-      <div class="achieve-title">NSS Volunteer — 120+ Hours</div>
-      <div class="achieve-org">National Service Scheme</div>
-      <div class="achieve-desc">Completed 120+ certified hours of community service through NSS initiatives — covering health camps, environmental drives, and education outreach in the Nagpur region.</div>
+      <div class="achieve-img-wrap" onclick="openLightbox('Achievments/presedent.png.jpeg')">
+        <img src="Achievments/presedent.png.jpeg" alt="EMERGICON Forum President" loading="lazy"/>
+        <span class="zoom-hint"><i class="fas fa-search-plus"></i> Click to view</span>
+      </div>
+      <div class="achieve-body">
+        <div class="achieve-badge badge-prof">⭐ Leadership</div>
+        <div class="achieve-year">2023 – 2024</div>
+        <div class="achieve-title">EMERGICON Forum President</div>
+        <div class="achieve-org">Students Forum Committee, SBJITMR</div>
+        <div class="achieve-desc">Led the EMERGICON technical forum, organizing events, workshops, and hackathons for a community of 200+ students — coordinating speakers, timelines, and cross-team collaboration across two academic semesters.</div>
+      </div>
     </div>
+
     <div class="achieve-card" id="achCard5">
-      <div class="achieve-badge badge-hack">🚀 Hackathon</div>
-      <div class="achieve-year">2023 – 2024</div>
-      <div class="achieve-title">IETE ISF Congress Hackathon</div>
-      <div class="achieve-org">IETE ISF</div>
-      <div class="achieve-desc">Participated and competed in the IETE ISF Congress Hackathon, showcasing AI/ML-based project solutions and collaborating with peers on innovative engineering challenges.</div>
+      <div class="achieve-body">
+        <div class="achieve-badge badge-prof">🤝 Community</div>
+        <div class="achieve-year">2021 – 2023</div>
+        <div class="achieve-title">NSS Volunteer — 120+ Hours</div>
+        <div class="achieve-org">National Service Scheme</div>
+        <div class="achieve-desc">Completed 120+ certified hours of community service through NSS initiatives — covering health camps, environmental drives, and education outreach in the Nagpur region.</div>
+      </div>
     </div>
+
     <div class="achieve-card" id="achCard6">
-      <div class="achieve-badge badge-hack">🚀 Hackathon</div>
-      <div class="achieve-year">2023 – 2024</div>
-      <div class="achieve-title">Abhudhya Hackathon</div>
-      <div class="achieve-org">Inter-College Competition</div>
-      <div class="achieve-desc">Competed in the Abhudhya Hackathon, developing data-driven solutions under time pressure and demonstrating strong teamwork and rapid prototyping skills.</div>
+      <div class="achieve-img-wrap" onclick="openLightbox('Achievments/IETE ISF congress hackthon.jpg')">
+        <img src="Achievments/IETE ISF congress hackthon.jpg" alt="IETE ISF Congress Hackathon" loading="lazy"/>
+        <span class="zoom-hint"><i class="fas fa-search-plus"></i> Click to view</span>
+      </div>
+      <div class="achieve-body">
+        <div class="achieve-badge badge-hack">🚀 Hackathon</div>
+        <div class="achieve-year">2023 – 2024</div>
+        <div class="achieve-title">IETE ISF Congress Hackathon</div>
+        <div class="achieve-org">IETE ISF</div>
+        <div class="achieve-desc">Participated and competed in the IETE ISF Congress Hackathon, showcasing AI/ML-based project solutions and collaborating with peers on innovative engineering challenges.</div>
+      </div>
     </div>
+
     <div class="achieve-card" id="achCard7">
-      <div class="achieve-badge badge-hack">🚀 Hackathon</div>
-      <div class="achieve-year">2023 – 2024</div>
-      <div class="achieve-title">ACM Hackathon</div>
-      <div class="achieve-org">ACM Student Chapter</div>
-      <div class="achieve-desc">Participated in the ACM Hackathon, building and presenting technical solutions in a competitive environment alongside peers from multiple institutions.</div>
+      <div class="achieve-img-wrap" onclick="openLightbox('Achievments/abhudhya hackthon.png')">
+        <img src="Achievments/abhudhya hackthon.png" alt="Abhudhya Hackathon" loading="lazy"/>
+        <span class="zoom-hint"><i class="fas fa-search-plus"></i> Click to view</span>
+      </div>
+      <div class="achieve-body">
+        <div class="achieve-badge badge-hack">🚀 Hackathon</div>
+        <div class="achieve-year">2023 – 2024</div>
+        <div class="achieve-title">Abhudhya Hackathon</div>
+        <div class="achieve-org">Inter-College Competition</div>
+        <div class="achieve-desc">Competed in the Abhudhya Hackathon, developing data-driven solutions under time pressure and demonstrating strong teamwork and rapid prototyping skills.</div>
+      </div>
     </div>
+
     <div class="achieve-card" id="achCard8">
-      <div class="achieve-badge badge-hack">🚀 Hackathon</div>
-      <div class="achieve-year">2023 – 2024</div>
-      <div class="achieve-title">Teleport Hackathon</div>
-      <div class="achieve-org">Tech Competition</div>
-      <div class="achieve-desc">Competed in the Teleport Hackathon, applying AI and data science skills to solve real-world problem statements within constrained timelines.</div>
+      <div class="achieve-img-wrap" onclick="openLightbox('Achievments/acm hackthon.png')">
+        <img src="Achievments/acm hackthon.png" alt="ACM Hackathon" loading="lazy"/>
+        <span class="zoom-hint"><i class="fas fa-search-plus"></i> Click to view</span>
+      </div>
+      <div class="achieve-body">
+        <div class="achieve-badge badge-hack">🚀 Hackathon</div>
+        <div class="achieve-year">2023 – 2024</div>
+        <div class="achieve-title">ACM Hackathon</div>
+        <div class="achieve-org">ACM Student Chapter</div>
+        <div class="achieve-desc">Participated in the ACM Hackathon, building and presenting technical solutions in a competitive environment alongside peers from multiple institutions.</div>
+      </div>
     </div>
+
+    <div class="achieve-card" id="achCard9">
+      <div class="achieve-img-wrap" onclick="openLightbox('Achievments/teliport hackhthon.png')">
+        <img src="Achievments/teliport hackhthon.png" alt="Teleport Hackathon" loading="lazy"/>
+        <span class="zoom-hint"><i class="fas fa-search-plus"></i> Click to view</span>
+      </div>
+      <div class="achieve-body">
+        <div class="achieve-badge badge-hack">🚀 Hackathon</div>
+        <div class="achieve-year">2023 – 2024</div>
+        <div class="achieve-title">Teleport Hackathon</div>
+        <div class="achieve-org">Tech Competition</div>
+        <div class="achieve-desc">Competed in the Teleport Hackathon, applying AI and data science skills to solve real-world problem statements within constrained timelines.</div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1043,6 +1231,8 @@
       <div class="contact-social">
         <a href="https://www.linkedin.com/in/himanshi-kawade/" target="_blank"><i class="fab fa-linkedin-in"></i> LinkedIn</a>
         <a href="https://github.com/himanshikawade" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+        <a href="https://www.kaggle.com/himanshikawade04" target="_blank"><i class="fab fa-kaggle"></i> Kaggle</a>
+        <a href="Resume.pdf" download><i class="fas fa-file-pdf"></i> Resume</a>
       </div>
     </div>
   </div>
@@ -1055,12 +1245,26 @@
   <div class="f-social">
     <a href="https://github.com/himanshikawade" target="_blank"><i class="fab fa-github"></i></a>
     <a href="https://www.linkedin.com/in/himanshi-kawade/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+    <a href="https://www.kaggle.com/himanshikawade04" target="_blank"><i class="fab fa-kaggle"></i></a>
     <a href="mailto:himanshikawade4@gmail.com"><i class="fas fa-envelope"></i></a>
   </div>
   <div class="f-copy">© 2025 Himanshi Kawade. Built with ♥ and precision.</div>
 </footer>
 
 <script>
+/* ── LIGHTBOX ── */
+function openLightbox(src){
+  const lb=document.getElementById('lightbox');
+  document.getElementById('lightboxImg').src=src;
+  lb.classList.add('active');
+  document.body.style.overflow='hidden';
+}
+function closeLightbox(){
+  document.getElementById('lightbox').classList.remove('active');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeLightbox(); });
+
 /* ── INTERSECTION OBSERVER ANIMATIONS ── */
 const io = new IntersectionObserver((entries)=>{
   entries.forEach(e=>{
@@ -1194,7 +1398,7 @@ reg('statsRow',()=>{
     },i*100);
   });
 });
-['achCard1','achCard2','achCard3','achCard4','achCard5','achCard6','achCard7','achCard8'].forEach(id=>{
+['achCard1','achCard2','achCard3','achCard4','achCard5','achCard6','achCard7','achCard8','achCard9'].forEach(id=>{
   reg(id,el=>{
     el.style.transition='opacity 0.6s ease, transform 0.6s ease';
     el.style.opacity='1'; el.style.transform='scale(1)';
